@@ -1,20 +1,19 @@
 import streamlit as st
 import pandas as pd
 
-# Load your fragrance dataset
+# Dataset 
 @st.cache_data
 def load_data():
     return pd.read_csv("scentelligence_mini_db.csv", encoding='latin1')
-
-
 df = load_data()
+st.write("🧠 CSV Columns:", df.columns.tolist())
 
 st.set_page_config(page_title="Scentelligence - Personalized Fragrance Recommender", layout="centered")
 st.title("🧠 Scentelligence")
 st.subheader("Your personalized scent advisor")
 st.markdown("Answer a few quick questions and get 3 fragrance recommendations tailored to your body, mood, and style.")
 
-# --- Questionnaire ---
+# Questionnaire
 with st.form("quiz_form"):
     st.markdown("### 1. What's your skin type?")
     skin_type = st.radio("", ["Oily", "Dry", "Combination", "Normal"])
@@ -42,12 +41,11 @@ with st.form("quiz_form"):
 
     submitted = st.form_submit_button("🔍 Get My Recommendations")
 
-# --- Matching Logic ---
+# Matching Logic
 if submitted:
     st.markdown("---")
     st.header("🎯 Your Personalized Scent Matches")
 
-    # Apply filters (simple version)
     filtered = df.copy()
 
     if skin_type == "Oily":
