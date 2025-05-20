@@ -4,8 +4,9 @@ import pandas as pd
 # Dataset 
 @st.cache_data
 def load_data():
-    return pd.read_csv("scentelligence_mini_db.csv", encoding='utf-8')
+    return pd.read_csv("scentelligence_mini_db.csv", encoding='utf-8', sep=';')
 df = load_data()
+df.columns = df.columns.str.strip()
 st.write("🧠 CSV Columns:", df.columns.tolist())
 
 st.set_page_config(page_title="Scentelligence - Personalized Fragrance Recommender", layout="centered")
