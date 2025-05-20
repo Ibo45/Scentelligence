@@ -4,7 +4,7 @@ import pandas as pd
 # Dataset 
 @st.cache_data
 def load_data():
-    return pd.read_csv("scentelligence_mini_db.csv", encoding='latin1')
+    return pd.read_csv("scentelligence_mini_db.csv", encoding='utf-8')
 df = load_data()
 st.write("🧠 CSV Columns:", df.columns.tolist())
 
