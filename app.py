@@ -4,7 +4,8 @@ import pandas as pd
 # Load your fragrance dataset
 @st.cache_data
 def load_data():
-    return pd.read_csv("scentelligence_mini_db.csv")  
+    return pd.read_csv("scentelligence_mini_db.csv", encoding='latin1')
+
 
 df = load_data()
 
