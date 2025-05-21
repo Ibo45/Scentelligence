@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+import openai
+
+openai.api_key = st.secrets["openai_key"]
 
 # Dataset 
 @st.cache_data
@@ -79,3 +82,46 @@ if submitted:
             st.markdown("---")
     else:
         st.warning("Sorry, we couldn’t find a perfect match based on your inputs. Try adjusting a few answers.")
+
+# Recommender AI - GPT3.5 for now
+def recommend_with_gpt(user_profile, scent_options):
+    scent_text = "\n".join([
+        f"{row['Name']} by {row['Brand']} - Top Notes: {row['Top Notes']}, Heart: {row['Heart Notes']}, Base: {row['Base Notes']}, Longevity: {row['Longevity']}, Mood: {row['Mood']}, Season: {row['Seasonality']}"
+        for _, row in scent_options.iterrows()
+    ])
+
+    prompt = f"""
+You are a scent sommelier AI helping a user choose fragrances.
+User profile: {user_profile}
+
+Here are some fragrance options:
+{scent_text}
+
+Based on the user's profile, recommend the 3 best matching fragrances and explain why in a friendly, professional tone.
+"""
+
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a scent recommendation expert."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.7
+    )
+    return response.choices[0].message.content
+
+# GPT after form submission
+if submitted:
+    st.markdown("---")
+    st.header("🤖 Your Personalized AI Recommendations")
+
+    user_profile = f"Skin type: {skin_type}, Skin temp: {skin_temp}, Activity: {activity}, Personality: {personality}, Mood: {mood}, Use case: {use_case}, Season: {season}, Longevity: {longevity}"
+
+    sample_data = df.sample(n=min(10, len(df)))
+
+    try:
+        ai_response = recommend_with_gpt(user_profile, sample_data)
+        st.markdown(ai_response)
+    except Exception as e:
+        st.error("⚠️ AI recommendation failed. Please try again later.")
+        st.text(str(e))

@@ -1,0 +1,13 @@
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# OS / editor clutter
+__pycache__/
+*.pyc
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Excel temp files
+~$*.xlsx
