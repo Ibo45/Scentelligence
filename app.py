@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import openai
 
+# Must be first call
+st.set_page_config(page_title="Scentelligence - Personalized Fragrance Recommender", layout="centered")
+
 openai.api_key = st.secrets["openai_key"]
 
 # Dataset 
@@ -12,7 +15,7 @@ df = load_data()
 df.columns = df.columns.str.strip()
 st.write("🧠 CSV Columns:", df.columns.tolist())
 
-st.set_page_config(page_title="Scentelligence - Personalized Fragrance Recommender", layout="centered")
+# UI 
 st.title("🧠 Scentelligence")
 st.subheader("Your personalized scent advisor")
 st.markdown("Answer a few quick questions and get 3 fragrance recommendations tailored to your body, mood, and style.")
